@@ -1,0 +1,148 @@
+
+[[_paths]]
+== Paths
+
+[[_getbundle]]
+=== Retrieve a Data Bundle
+....
+GET /bundles/{bundle_id}
+....
+
+
+==== Parameters
+
+[options="header", cols=".^2,.^3,.^4"]
+|===
+|Type|Name|Schema
+|**Path**|**bundle_id** +
+__required__|string
+|===
+
+
+==== Responses
+
+[options="header", cols=".^2,.^14,.^4"]
+|===
+|HTTP Code|Description|Schema
+|**200**|Successfully found the Data Bundle.|<<_getbundleresponse,GetBundleResponse>>
+|**400**|The request is malformed.|<<_errorresponse,ErrorResponse>>
+|**401**|The request is unauthorized.|<<_errorresponse,ErrorResponse>>
+|**403**|The requester is not authorized to perform this action.|<<_errorresponse,ErrorResponse>>
+|**404**|The requested Data Bundle wasn't found.|<<_errorresponse,ErrorResponse>>
+|**500**|An unexpected error occurred.|<<_errorresponse,ErrorResponse>>
+|===
+
+
+==== Tags
+
+* DataRepositoryService
+
+
+[[_getobject]]
+=== Get info about a Data Object.
+....
+GET /objects/{object_id}
+....
+
+
+==== Description
+Returns object metadata, and a list of access methods that can be used to fetch object bytes.
+
+
+==== Parameters
+
+[options="header", cols=".^2,.^3,.^4"]
+|===
+|Type|Name|Schema
+|**Path**|**object_id** +
+__required__|string
+|===
+
+
+==== Responses
+
+[options="header", cols=".^2,.^14,.^4"]
+|===
+|HTTP Code|Description|Schema
+|**200**|The Data Object was found successfully.|<<_getobjectresponse,GetObjectResponse>>
+|**400**|The request is malformed.|<<_errorresponse,ErrorResponse>>
+|**401**|The request is unauthorized.|<<_errorresponse,ErrorResponse>>
+|**403**|The requester is not authorized to perform this action.|<<_errorresponse,ErrorResponse>>
+|**404**|The requested Data Object wasn't found|<<_errorresponse,ErrorResponse>>
+|**500**|An unexpected error occurred.|<<_errorresponse,ErrorResponse>>
+|===
+
+
+==== Tags
+
+* DataRepositoryService
+
+
+[[_getaccessurl]]
+=== Get a URL for fetching bytes.
+....
+GET /objects/{object_id}/access/{access_id}
+....
+
+
+==== Description
+Returns a fully resolvable URL that can be used to fetch the actual object bytes.
+
+
+==== Parameters
+
+[options="header", cols=".^2,.^3,.^9,.^4"]
+|===
+|Type|Name|Description|Schema
+|**Path**|**access_id** +
+__required__|An `access_id` from the `access_methods` list of a Data Object|string
+|**Path**|**object_id** +
+__required__||string
+|===
+
+
+==== Responses
+
+[options="header", cols=".^2,.^14,.^4"]
+|===
+|HTTP Code|Description|Schema
+|**200**|The access URL was found successfully.|<<_accessurl,AccessURL>>
+|**400**|The request is malformed.|<<_errorresponse,ErrorResponse>>
+|**401**|The request is unauthorized.|<<_errorresponse,ErrorResponse>>
+|**403**|The requester is not authorized to perform this action.|<<_errorresponse,ErrorResponse>>
+|**404**|The requested access URL wasn't found|<<_errorresponse,ErrorResponse>>
+|**500**|An unexpected error occurred.|<<_errorresponse,ErrorResponse>>
+|===
+
+
+==== Tags
+
+* DataRepositoryService
+
+
+[[_getserviceinfo]]
+=== Get information about this implementation.
+....
+GET /service-info
+....
+
+
+==== Description
+May return service version and other information.
+
+
+==== Responses
+
+[options="header", cols=".^2,.^14,.^4"]
+|===
+|HTTP Code|Description|Schema
+|**200**|Service information returned successfully|<<_serviceinforesponse,ServiceInfoResponse>>
+|===
+
+
+==== Tags
+
+* DataRepositoryService
+
+
+

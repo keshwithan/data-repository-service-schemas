@@ -1,0 +1,204 @@
+
+[[_definitions]]
+== Definitions
+
+[[_accessmethod]]
+=== AccessMethod
+
+[options="header", cols=".^3,.^11,.^4"]
+|===
+|Name|Description|Schema
+|**access_id** +
+__optional__|An arbitrary string to be passed to the /access path to get an `AccessURL`. This must be unique per object. Note that at least one of `access_url` and `access_id` must be provided.|string
+|**access_url** +
+__optional__|An `AccessURL` that can be used to fetch the actual object bytes. Note that at least one of `access_url` and `access_id` must be provided.|<<_accessurl,AccessURL>>
+|**region** +
+__optional__|Name of the region in the cloud service provider that the object belongs to. +
+**Example** : `"us-east-1"`|string
+|**type** +
+__required__|Type of the access method.|enum (s3, gs, ftp, sftp, http, https, nfs, globus, aspera, gsiftp, local)
+|===
+
+
+[[_accessurl]]
+=== AccessURL
+
+[options="header", cols=".^3,.^11,.^4"]
+|===
+|Name|Description|Schema
+|**headers** +
+__optional__|An optional list of headers to include in the HTTP request to `url`. These headers can be used to provide auth tokens required to fetch the object bytes. +
+**Example** : `{
+  "Authorization" : "Basic Z2E0Z2g6ZHJz"
+}`|< string > array
+|**url** +
+__required__|A fully resolvable URL that can be used to fetch the actual object bytes.|string
+|===
+
+
+[[_bundle]]
+=== Bundle
+
+[options="header", cols=".^3,.^11,.^4"]
+|===
+|Name|Description|Schema
+|**aliases** +
+__optional__|A list of strings that can be used to identify this Data Bundle.|< string > array
+|**checksums** +
+__required__|At least one checksum must be provided.
+The Data Bundle checksum is computed over all the checksums of the
+Data Objects that bundle contains.|< <<_checksum,Checksum>> > array
+|**created** +
+__required__|Timestamp of object creation in RFC3339.|string (date-time)
+|**description** +
+__optional__|A human readable description.|string
+|**id** +
+__required__|An identifier, unique to this Data Bundle|string
+|**object_ids** +
+__required__|The list of Data Objects that this Data Bundle contains.|< string > array
+|**system_metadata** +
+__optional__||<<_systemmetadata,SystemMetadata>>
+|**updated** +
+__required__|Timestamp of update in RFC3339, identical to create timestamp in systems
+that do not support updates.|string (date-time)
+|**user_metadata** +
+__optional__||<<_usermetadata,UserMetadata>>
+|**version** +
+__required__|A string representing a version, some systems may use checksum, a RFC3339
+timestamp, or incrementing version number. For systems that do not support
+versioning please use your update timestamp as your version.|string
+|===
+
+
+[[_checksum]]
+=== Checksum
+
+[options="header", cols=".^3,.^11,.^4"]
+|===
+|Name|Description|Schema
+|**checksum** +
+__required__|The hex-string encoded checksum for the Data.|string
+|**type** +
+__optional__|The digest method used to create the checksum. If left unspecified md5
+will be assumed.
+
+possible values:
+md5 # most blob stores provide a checksum using this
+multipart-md5 # multipart uploads provide a specialized tag in S3
+sha256
+sha512|string
+|===
+
+
+[[_errorresponse]]
+=== ErrorResponse
+An object that can optionally include information about the error.
+
+
+[options="header", cols=".^3,.^11,.^4"]
+|===
+|Name|Description|Schema
+|**msg** +
+__optional__|A detailed error message.|string
+|**status_code** +
+__optional__|The integer representing the HTTP status code (e.g. 200, 404).|integer
+|===
+
+
+[[_getbundleresponse]]
+=== GetBundleResponse
+
+[options="header", cols=".^3,.^4"]
+|===
+|Name|Schema
+|**bundle** +
+__optional__|<<_bundle,Bundle>>
+|===
+
+
+[[_getobjectresponse]]
+=== GetObjectResponse
+
+[options="header", cols=".^3,.^4"]
+|===
+|Name|Schema
+|**object** +
+__required__|<<_object,Object>>
+|===
+
+
+[[_object]]
+=== Object
+
+[options="header", cols=".^3,.^11,.^4"]
+|===
+|Name|Description|Schema
+|**access_methods** +
+__required__|The list of access methods that can be used to access the Data Object.|< <<_accessmethod,AccessMethod>> > array
+|**aliases** +
+__optional__|A list of strings that can be used to find this Data Object.
+These aliases can be used to represent the Data Object's location in
+a directory (e.g. "bucket/folder/file.name") to make Data Objects
+more discoverable. They might also be used to represent|< string > array
+|**checksums** +
+__required__|The checksum of the Data Object. At least one checksum must be provided.|< <<_checksum,Checksum>> > array
+|**created** +
+__required__|Timestamp of object creation in RFC3339.|string (date-time)
+|**description** +
+__optional__|A human readable description of the contents of the Data Object.|string
+|**id** +
+__required__|An identifier unique to this Data Object.|string
+|**mime_type** +
+__optional__|A string providing the mime-type of the Data Object.
+For example, "application/json".|string
+|**name** +
+__optional__|A string that can be optionally used to name a Data Object.|string
+|**size** +
+__required__|The computed size in bytes.|string (int64)
+|**updated** +
+__optional__|Timestamp of update in RFC3339, identical to create timestamp in systems
+that do not support updates.|string (date-time)
+|**version** +
+__optional__|A string representing a version.|string
+|===
+
+
+[[_serviceinforesponse]]
+=== ServiceInfoResponse
+Placeholder for the Info Object
+
+
+[options="header", cols=".^3,.^11,.^4"]
+|===
+|Name|Description|Schema
+|**contact** +
+__optional__|Maintainer contact info|object
+|**description** +
+__optional__|Service description|string
+|**license** +
+__optional__|License information for the exposed API|object
+|**title** +
+__optional__|Service name|string
+|**version** +
+__required__|Service version|string
+|===
+
+
+[[_systemmetadata]]
+=== SystemMetadata
+OPTIONAL
+These values are reported by the underlying object store.
+A set of key-value pairs that represent system metadata about the object.
+
+__Type__ : object
+
+
+[[_usermetadata]]
+=== UserMetadata
+OPTIONAL
+A set of key-value pairs that represent metadata provided by the uploader.
+
+__Type__ : object
+
+
+
